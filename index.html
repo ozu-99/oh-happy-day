@@ -1117,10 +1117,10 @@
       pendingTransfer = { itemId: currentDetailItem.id, role, method: 'transfer' };
     }
 
-    // 3) 모바일이면 anchor 클릭으로 kakaopay 스킴 트리거 (user gesture 보존)
+    // 3) 모바일이면 카카오톡 → 카카오페이 스킴 트리거 (user gesture 보존)
     if (isMobile) {
       const a = document.createElement('a');
-      a.href = 'kakaopay://';
+      a.href = 'kakaotalk://kakaopay/money/to/bank';
       a.style.display = 'none';
       document.body.appendChild(a);
       a.click();
