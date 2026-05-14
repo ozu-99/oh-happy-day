@@ -438,6 +438,7 @@
     }
     .detail-value > .transfer-btn { flex-shrink: 0; margin-left: 0; }
     #detailGroomAccount, #detailBrideAccount { white-space: pre-line; line-height: 1.4; }
+    #detailDateTime { white-space: pre-line; line-height: 1.4; }
     #detailGroomLabel, #detailBrideLabel { white-space: pre-line; line-height: 1.4; }
     .celebrate-btn-wrap { text-align: center; padding: 4px 0 0; }
     .celebrate-btn-wrap[hidden] { display: none; }
@@ -1484,12 +1485,13 @@
         const hh = tm[2].padStart(2, '0');
         const minNum = tm[3] ? parseInt(tm[3], 10) : 0;
         const minPart = minNum > 0 ? ` ${String(minNum).padStart(2, '0')}분` : '';
-        timeStr = ` ${ampm} ${hh}시${minPart}`;
+        timeStr = ` ${ampm} ${hh}시${minPart}`;
       } else {
-        timeStr = ` ${time}`;
+        timeStr = ` ${time.replace(/^(오[전후])\s+/, '$1 ')}`;
       }
     }
-    return `${y}년 ${m}월 ${d}일 (${dow})${timeStr}`;
+    const timeFinal = timeStr ? `\n${timeStr.trimStart()}` : '';
+    return `${y}년 ${m}월 ${d}일 (${dow})${timeFinal}`;
   }
 
   function formatAccountDisplay(accountStr) {
