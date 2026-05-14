@@ -1893,7 +1893,14 @@
       });
       const data = await resp.json();
       if (!resp.ok) throw new Error(data.error || `서버 오류 (${resp.status})`);
-      const summary = data.summary || '(빈 응답)';
+      const summary = (data.summary || '').trim();
+      if (!summary) {
+        setResult('링크를 다시 확인해주세요', 'muted');
+        setDDay('');
+        setSaveButton('hidden');
+        currentEvent = null;
+        return;
+      }
       const lines = summary.split('\n');
       const eventName = lines[0] || '';
       const infoLine = (lines[1] || '').trim();
