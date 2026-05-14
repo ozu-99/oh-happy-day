@@ -29,6 +29,7 @@
       align-items: start;
       background: #2a2a2a url('/bg.jpg') center/cover no-repeat fixed;
       color: #1a1a1a;
+      word-break: keep-all;
     }
     .page-head { grid-row: 2; }
     main { grid-row: 3; }
@@ -1848,8 +1849,13 @@
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (submitBtn.disabled) return;
     const input = urlInput.value.trim();
-    if (!input) return;
+    if (!input) {
+      setResult('내용을 넣어주세요', 'err');
+      setDDay('');
+      return;
+    }
 
     if (new TextEncoder().encode(input).length > 100) {
       setResult('초대장 링크를 다시 확인해주세요', 'err');
