@@ -1109,7 +1109,21 @@
     const toCopy = numMatch ? numMatch[0] : account;
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-    // 1) 클립보드 복사 (백그라운드)
+    // 1) 클립보드 복사 — 동기(execCommand)로 먼저 보장, 비동기는 보조
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = toCopy;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '0';
+      ta.style.left = '0';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, toCopy.length);
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    } catch (e) {}
     if (navigator.clipboard) navigator.clipboard.writeText(toCopy).catch(() => {});
 
     // 2) 송금 끝나고 돌아왔을 때 축의금 입력 모달을 띄우기 위한 상태 저장
