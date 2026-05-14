@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Congratulations !</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'JoseonGulim';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunGu.woff') format('woff');
+      font-weight: normal;
+      font-display: swap;
+    }
+    :root { color-scheme: light; }
+    html, body { height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+      margin: 0;
+      padding: 24px 16px;
+      box-sizing: border-box;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: 2fr auto auto auto 4fr;
+      justify-items: center;
+      align-items: start;
+      background: #2a2a2a url('/bg.jpg') center/cover no-repeat fixed;
+      color: #1a1a1a;
+    }
+    .page-head { grid-row: 2; }
+    main { grid-row: 3; }
+    #mainSchedules { grid-row: 4; }
+    main {
+      width: 100%;
+      max-width: 640px;
+      margin: 0;
+      padding: 28px;
+      box-sizing: border-box;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 14px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    @media (max-width: 700px) {
+      main { padding: 20px; }
+    }
+    .page-head {
+      width: 100%;
+      max-width: 640px;
+      margin: 0 0 16px;
+      padding: 0;
+      text-align: center;
+    }
+    h1 {
+      font-family: 'Pinyon Script', cursive;
+      font-weight: 400;
+      font-size: clamp(56px, 10vw, 96px);
+      line-height: 1.0;
+      text-align: center;
+      margin: 0 0 18px;
+      color: #1a1a1a;
+      white-space: nowrap;
+      text-shadow:
+        0 1px 8px rgba(255, 255, 255, 0.65),
+        0 0 24px rgba(255, 255, 255, 0.35);
+    }
+    h1 .initial { font-size: 1.3em; line-height: 1; }
+    .sub {
+      font-family: 'JoseonGulim', -apple-system, sans-serif;
+      color: #1a1a1a;
+      font-size: 16px;
+      letter-spacing: 0.02em;
+      margin: 0;
+      text-align: center;
+      display: inline-block;
+      padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      text-shadow:
+        0 1px 6px rgba(255, 255, 255, 0.7),
+        0 0 18px rgba(255, 255, 255, 0.4);
+    }
+    #mainSchedules {
+      width: 100%;
+      max-width: 640px;
+      margin: 16px 0 0;
+      box-sizing: border-box;
+    }
+    #mainSchedules:empty { display: none; }
+    .main-schedule-card {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 14px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      max-height: 245px;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+    .main-schedule-item {
+      display: grid;
+      grid-template-columns: 1fr 5fr;
+      gap: 0 8px;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      transition: background 0.12s ease;
+      font-family: 'JoseonGulim', sans-serif;
+    }
+    .main-schedule-item:last-child { border-bottom: none; }
+    .main-schedule-item:hover { background: rgba(0, 0, 0, 0.03); }
+    .main-schedule-item .item-dday { text-align: center; font-size: 18px; font-weight: 700; color: #a82a30; white-space: nowrap; }
+    .main-schedule-item .item-dday.past { color: #888; }
+    .main-schedule-item .item-name { text-align: left; font-size: 14px; word-break: break-word; }
+    form { display: flex; gap: 8px; margin-bottom: 16px; }
+    input[type="url"]#urlInput {
+      flex: 1;
+      min-width: 0;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-family: inherit;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.5);
+      color: black;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    input[type="url"]#urlInput:focus {
+      outline: none;
+      border-color: #000000;
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25);
+    }
+    button {
+      padding: 10px 18px;
+      font-size: 14px;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 6px;
+      background: #ffffff;
+      color: #1a1a1a;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    button:hover:not(:disabled) { background: #f6f6f7; border-color: rgba(0, 0, 0, 0.25); }
+    button:disabled { background: #f0f0f0; color: #aaa; border-color: rgba(0, 0, 0, 0.08); cursor: not-allowed; }
+    .result {
+      padding: 12px 16px 10px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+      min-height: 32px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #1a1a1a;
+      text-align: center;
+    }
+    .result.muted { color: #888; }
+    .result.err { background: #ffffff; border-color: #e6b8b5; color: #b3261e; }
+    .result-name {
+      margin-bottom: 22px;
+      font-size: 19px;
+      font-weight: 700;
+    }
+    .result-details {
+      display: inline-block;
+      text-align: left;
+      line-height: 1.7;
+    }
+    .past-event-msg {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #888;
+    }
+    .loading-gif {
+      display: block;
+      margin: 10px auto 0;
+      max-width: 96px;
+      max-height: 96px;
+    }
+    #saveBtn {
+      display: block;
+      margin: 20px auto 0;
+      padding: 8px 22px;
+      font-size: 13px;
+      font-family: 'JoseonGulim', sans-serif;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.85);
+      color: #1a1a1a;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: background 0.15s ease;
+    }
+    #saveBtn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.98); }
+    #saveBtn:disabled { opacity: 0.5; cursor: default; }
+    #saveBtn[hidden] { display: none; }
+    #listShortcut {
+      position: fixed;
+      top: 32px;
+      right: 32px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-family: 'JoseonGulim', sans-serif;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.85);
+      color: #1a1a1a;
+      cursor: pointer;
+      z-index: 50;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    #listShortcut:hover { background: rgba(255, 255, 255, 0.98); }
+    .list-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .list-overlay[hidden] { display: none; }
+    .list-panel {
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 14px;
+      width: 100%;
+      max-width: 480px;
+      max-height: 80vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      font-family: 'JoseonGulim', sans-serif;
+    }
+    .list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    .list-header h2 { margin: 0; font-size: 16px; font-weight: 600; }
+    #closeList {
+      padding: 6px 14px;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 999px;
+      background: white;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: 'JoseonGulim', sans-serif;
+    }
+    #closeDetail {
+      padding: 6px 14px;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 999px;
+      background: white;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: 'JoseonGulim', sans-serif;
+    }
+    .list-tabs {
+      display: flex;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    .list-tab {
+      flex: 1;
+      padding: 10px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: #888;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: 'JoseonGulim', sans-serif;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+    .list-tab:hover { color: #555; }
+    .list-tab.active {
+      color: #1a1a1a;
+      border-bottom-color: #1a1a1a;
+    }
+    .list-items {
+      list-style: none;
+      margin: 0;
+      padding: 4px 0;
+      overflow-y: auto;
+    }
+    .list-items li {
+      display: grid;
+      grid-template-columns: 1fr 5fr auto auto;
+      align-items: center;
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      gap: 0 8px;
+      cursor: pointer;
+      transition: background 0.12s ease;
+    }
+    .list-items li:hover { background: rgba(0, 0, 0, 0.03); }
+    .list-items .item-dday { text-align: center; }
+    .list-items .item-name { text-align: left; }
+    .item-info { flex: 1; min-width: 0; }
+    .item-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; word-break: break-word; }
+    .item-meta { font-size: 12px; color: #666; word-break: break-word; }
+    .item-dday { font-size: 18px; font-weight: 700; color: #a82a30; white-space: nowrap; }
+    .item-dday.past { color: #888; }
+    .item-delete {
+      background: transparent;
+      border: none;
+      color: #999;
+      cursor: pointer;
+      font-size: 12px;
+      padding: 0 4px;
+      font-family: 'JoseonGulim', sans-serif;
+    }
+    .item-delete:hover { color: #c00; }
+    .item-edit {
+      background: transparent;
+      border: none;
+      color: #666;
+      cursor: pointer;
+      font-size: 12px;
+      padding: 0 4px;
+      font-family: 'JoseonGulim', sans-serif;
+    }
+    .item-edit:hover { color: #1a1a1a; }
+    .item-payment {
+      background: transparent;
+      border: none;
+      color: #a82a30;
+      cursor: pointer;
+      font-size: 12px;
+      padding: 0 4px;
+      font-family: 'JoseonGulim', sans-serif;
+    }
+    .item-payment:hover { color: #722f37; }
+    .list-empty {
+      text-align: center;
+      color: #999;
+      padding: 30px 20px;
+      margin: 0;
+      font-size: 13px;
+    }
+    .role-body { padding: 18px 20px 20px; }
+    .role-instruction {
+      font-size: 13px;
+      color: #666;
+      margin: 0 0 14px;
+      text-align: center;
+    }
+    .role-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.6);
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .role-option:hover { background: rgba(255, 255, 255, 0.9); border-color: rgba(0, 0, 0, 0.2); }
+    .role-option input[type="checkbox"] { margin: 0; cursor: pointer; }
+    #roleConfirm {
+      display: block;
+      width: 100%;
+      margin-top: 14px;
+      padding: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #1a1a1a;
+      cursor: pointer;
+      font-family: 'JoseonGulim', sans-serif;
+      font-size: 14px;
+      transition: background 0.15s ease;
+    }
+    #roleConfirm:hover:not(:disabled) { background: rgba(255, 255, 255, 1); }
+    #roleConfirm:disabled { opacity: 0.4; cursor: not-allowed; }
+    .item-roles {
+      font-size: 11px;
+      color: #888;
+      margin-top: 4px;
+      font-style: italic;
+    }
+    .detail-body { padding: 18px 20px 20px; background: #f7f7f7; }
+    .detail-section {
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+      padding: 6px 16px;
+      margin-bottom: 10px;
+    }
+    .detail-section:last-child { margin-bottom: 0; }
+    .detail-row {
+      display: flex;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    .detail-section .detail-row:last-child { border-bottom: none; }
+    .detail-section .detail-row:only-child { border-bottom: none; }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label {
+      width: 80px;
+      color: #888;
+      font-size: 13px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .detail-value {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      word-break: break-word;
+      min-width: 0;
+    }
+    .detail-value > span:first-child {
+      flex: 1;
+      min-width: 0;
+    }
+    .detail-value > .transfer-btn { flex-shrink: 0; margin-left: 0; }
+    #detailGroomAccount, #detailBrideAccount { white-space: pre-line; line-height: 1.4; }
+    #detailGroomLabel, #detailBrideLabel { white-space: pre-line; line-height: 1.4; }
+    .celebrate-btn-wrap { text-align: center; padding: 4px 0 0; }
+    .celebrate-btn-wrap[hidden] { display: none; }
+    .celebrate-btn {
+      padding: 10px 28px;
+      font-size: 14px;
+      font-family: 'JoseonGulim', sans-serif;
+      border: 1px solid #a82a30;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #a82a30;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .celebrate-btn:hover { background: #a82a30; color: #ffffff; }
+    .celebrate-btn.completed {
+      background: #a82a30;
+      color: #ffffff;
+    }
+    .celebrate-btn.completed:hover { background: #722f37; }
+    .celebrate-choice {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 6px 0;
+    }
+    .celebrate-choice[hidden] { display: none; }
+    .celebrate-choice-btn {
+      padding: 14px 20px;
+      font-size: 14px;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      border-radius: 999px;
+      background: #ffffff;
+      color: #1a1a1a;
+      cursor: pointer;
+      font-family: 'JoseonGulim', sans-serif;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .celebrate-choice-btn:hover { background: #f4f4f4; }
+    .celebrate-choice-btn.primary {
+      border-color: #a82a30;
+      background: #a82a30;
+      color: #ffffff;
+    }
+    .celebrate-choice-btn.primary:hover { background: #722f37; }
+    .detail-row-datetime .detail-value { color: #a82a30; }
+    .detail-row[hidden] { display: none; }
+    .transfer-btn {
+      margin-left: 8px;
+      padding: 4px 10px;
+      font-size: 11px;
+      border: 1px solid #fae100;
+      border-radius: 999px;
+      background: #fee500;
+      color: #1a1a1a;
+      cursor: pointer;
+      font-family: 'JoseonGulim', sans-serif;
+      vertical-align: middle;
+    }
+    .transfer-btn:hover { background: #fdd835; }
+    .transfer-btn.disabled-look {
+      background: #f0f0f0;
+      border-color: #ccc;
+      color: #aaa;
+      cursor: not-allowed;
+    }
+    .transfer-btn.disabled-look:hover { background: #f0f0f0; }
+    .transfer-toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.85);
+      color: white;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-family: 'JoseonGulim', sans-serif;
+      z-index: 200;
+      transition: opacity 0.3s ease;
+    }
+    .transfer-toast[hidden] { display: none; }
+    .confirm-body { padding: 26px 20px 22px; text-align: center; }
+    .confirm-msg { font-size: 15px; color: #1a1a1a; margin: 0 0 18px; }
+    .success-title { font-size: 18px; font-weight: 600; color: #1a1a1a; margin: 0 0 14px; }
+    .amount-input-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .amount-input {
+      flex: 1;
+      min-width: 0;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: white;
+      color: #1a1a1a;
+      font-family: 'JoseonGulim', sans-serif;
+      text-align: center;
+    }
+    .amount-input:focus { outline: none; border-color: #000; }
+    .amount-unit {
+      font-size: 14px;
+      color: #1a1a1a;
+      font-family: 'JoseonGulim', sans-serif;
+      white-space: nowrap;
+    }
+    .payment-record {
+      display: block;
+      margin-top: 4px;
+      font-size: 11px;
+      color: #666;
+    }
+    .payment-done-row {
+      padding: 0 0 10px;
+      text-align: right;
+    }
+    .payment-done-row[hidden] { display: none; }
+    .detail-row:has(+ .payment-done-row:not([hidden])) {
+      border-bottom: none;
+    }
+    #detailGroomPaymentRow:not([hidden]) {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    .payment-done-btn {
+      padding: 5px 14px;
+      font-size: 12px;
+      border: 1px solid #a82a30;
+      border-radius: 999px;
+      background: #fff;
+      color: #a82a30;
+      cursor: pointer;
+      font-family: 'JoseonGulim', sans-serif;
+    }
+    .payment-done-btn:hover { background: #fdecea; }
+    #celebrateOverlay { z-index: 105; }
+    #paymentOverlay { z-index: 110; }
+    #amountOverlay { z-index: 120; }
+    #confirmOverlay { z-index: 130; }
+    .payment-body { padding: 18px 20px 20px; background: #f7f7f7; }
+    .payment-total {
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+      padding: 18px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+      color: #a82a30;
+      margin-bottom: 10px;
+      font-family: 'JoseonGulim', sans-serif;
+    }
+    .payment-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .payment-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      font-family: 'JoseonGulim', sans-serif;
+    }
+    .payment-list li:last-child { border-bottom: none; }
+    .payment-amount { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+    .payment-date { font-size: 12px; color: #888; margin-left: auto; margin-right: 12px; }
+    .payment-actions { display: flex; gap: 4px; }
+    .payment-edit-btn, .payment-del-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 11px;
+      padding: 2px 6px;
+      font-family: 'JoseonGulim', sans-serif;
+    }
+    .payment-edit-btn { color: #555; }
+    .payment-edit-btn:hover { color: #1a1a1a; }
+    .payment-del-btn { color: #999; }
+    .payment-del-btn:hover { color: #c00; }
+    .confirm-msg { white-space: pre-line; }
+    .confirm-actions { display: flex; gap: 8px; justify-content: center; }
+    .confirm-actions button {
+      flex: 1;
+      padding: 9px;
+      font-size: 13px;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #1a1a1a;
+      cursor: pointer;
+      font-family: 'JoseonGulim', sans-serif;
+      transition: background 0.15s ease;
+    }
+    .confirm-actions button:hover { background: rgba(255, 255, 255, 1); }
+    #confirmYes { color: #c00; }
+    .dday {
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .dday .big {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #a82a30;
+      line-height: 0.85;
+    }
+    .dday .meta {
+      font-size: 13px;
+      color: #a82a30;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <header class="page-head">
+    <h1><span class="initial">O</span>h Happy Day</h1>
+    <p class="sub">모바일 청첩장 링크를 입력해주세요</p>
+  </header>
+
+  <main>
+    <form id="form">
+      <input id="urlInput" type="url" placeholder="https://..." required autofocus autocomplete="off" spellcheck="false">
+      <button id="submitBtn" type="submit" aria-label="요약">♥</button>
+    </form>
+
+    <div id="result" class="result" hidden>
+      <div id="dday" class="dday" hidden></div>
+      <div id="resultBody"></div>
+    </div>
+    <button id="saveBtn" type="button" hidden>등록하기</button>
+  </main>
+
+  <div id="mainSchedules"></div>
+
+  <button id="listShortcut" type="button">일정 (0)</button>
+
+  <div id="listOverlay" class="list-overlay" hidden>
+    <div class="list-panel">
+      <header class="list-header">
+        <h2>일정 목록</h2>
+        <button id="closeList" type="button" aria-label="닫기">닫기</button>
+      </header>
+      <div class="list-tabs">
+        <button id="tabUpcoming" class="list-tab active" type="button">예정</button>
+        <button id="tabPast" class="list-tab" type="button">지난 일정</button>
+      </div>
+      <ul id="listItems" class="list-items"></ul>
+      <p id="listEmpty" class="list-empty" hidden>아직 등록된 일정이 없습니다.</p>
+    </div>
+  </div>
+
+  <div id="successOverlay" class="list-overlay" hidden>
+    <div class="list-panel" style="max-width: 320px;">
+      <div class="confirm-body">
+        <p class="success-title">등록 완료 !</p>
+        <p class="confirm-msg">등록된 일정 목록을<br>확인하시겠습니까?</p>
+        <div class="confirm-actions">
+          <button id="successYes" type="button">예</button>
+          <button id="successNo" type="button">아니오</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="celebrateOverlay" class="list-overlay" hidden>
+    <div class="list-panel">
+      <header class="list-header">
+        <h2>축하하기</h2>
+        <button id="closeCelebrate" type="button" aria-label="닫기">닫기</button>
+      </header>
+      <div class="detail-body">
+        <div class="celebrate-choice" id="celebrateChoice">
+          <button id="payInPersonBtn" type="button" class="celebrate-choice-btn">만나서 낼게요</button>
+          <button id="payByAccountBtn" type="button" class="celebrate-choice-btn primary">계좌로 보낼게요</button>
+        </div>
+        <div class="detail-section" id="detailAccountSection" hidden>
+          <div class="detail-row" id="detailGroomAccountRow" hidden>
+            <span class="detail-label" id="detailGroomLabel">신랑</span>
+            <span class="detail-value">
+              <span id="detailGroomAccount"></span>
+              <button id="detailGroomTransfer" type="button" class="transfer-btn">송금</button>
+            </span>
+          </div>
+          <div class="payment-done-row" id="detailGroomPaymentRow" hidden>
+            <button id="detailGroomPaymentBtn" type="button" class="payment-done-btn">축의 완료</button>
+          </div>
+          <div class="detail-row" id="detailBrideAccountRow" hidden>
+            <span class="detail-label" id="detailBrideLabel">신부</span>
+            <span class="detail-value">
+              <span id="detailBrideAccount"></span>
+              <button id="detailBrideTransfer" type="button" class="transfer-btn">송금</button>
+            </span>
+          </div>
+          <div class="payment-done-row" id="detailBridePaymentRow" hidden>
+            <button id="detailBridePaymentBtn" type="button" class="payment-done-btn">축의 완료</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="paymentOverlay" class="list-overlay" hidden>
+    <div class="list-panel" style="max-width: 360px;">
+      <header class="list-header">
+        <h2 id="paymentTitle">축의 기록</h2>
+        <button id="closePayment" type="button" aria-label="닫기">닫기</button>
+      </header>
+      <div class="payment-body">
+        <div class="payment-total" id="paymentTotal"></div>
+        <ul class="payment-list" id="paymentList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="amountOverlay" class="list-overlay" hidden>
+    <div class="list-panel" style="max-width: 320px;">
+      <div class="confirm-body">
+        <p class="success-title" id="amountTitle">축의금 기록</p>
+        <p class="confirm-msg" id="amountSubMsg">얼마 보내셨나요?</p>
+        <div class="amount-input-row">
+          <input id="amountInput" class="amount-input" type="text" inputmode="numeric">
+          <span class="amount-unit">만 원</span>
+        </div>
+        <div class="confirm-actions">
+          <button id="amountSkip" type="button">건너뛰기</button>
+          <button id="amountSave" type="button">저장</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="infoOverlay" class="list-overlay" hidden>
+    <div class="list-panel" style="max-width: 300px;">
+      <div class="confirm-body">
+        <p class="confirm-msg" id="infoMsg"></p>
+        <div class="confirm-actions">
+          <button id="infoOk" type="button">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmOverlay" class="list-overlay" hidden>
+    <div class="list-panel" style="max-width: 320px;">
+      <div class="confirm-body">
+        <p class="confirm-msg">삭제하시겠습니까?</p>
+        <div class="confirm-actions">
+          <button id="confirmYes" type="button">예</button>
+          <button id="confirmNo" type="button">아니오</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="detailOverlay" class="list-overlay" hidden>
+    <div class="list-panel">
+      <header class="list-header">
+        <h2>일정 상세</h2>
+        <button id="closeDetail" type="button" aria-label="닫기">닫기</button>
+      </header>
+      <div class="detail-body">
+        <div class="detail-section">
+          <div class="detail-row"><span class="detail-label">신랑</span><span class="detail-value" id="detailGroom"></span></div>
+          <div class="detail-row"><span class="detail-label">신부</span><span class="detail-value" id="detailBride"></span></div>
+          <div class="detail-row detail-row-datetime"><span class="detail-label">일시</span><span class="detail-value" id="detailDateTime"></span></div>
+          <div class="detail-row"><span class="detail-label">장소</span><span class="detail-value" id="detailLocation"></span></div>
+        </div>
+        <div class="celebrate-btn-wrap" id="celebrateBtnWrap">
+          <button id="celebrateBtn" type="button" class="celebrate-btn">축하하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="roleOverlay" class="list-overlay" hidden>
+    <div class="list-panel">
+      <header class="list-header">
+        <h2>관계 선택</h2>
+      </header>
+      <div class="role-body">
+        <p class="role-instruction">해당하는 관계를 모두 선택해주세요</p>
+        <label class="role-option">
+          <input type="checkbox" id="roleGroom">
+          <span id="roleGroomLabel">신랑</span>
+        </label>
+        <label class="role-option">
+          <input type="checkbox" id="roleBride">
+          <span id="roleBrideLabel">신부</span>
+        </label>
+        <button id="roleConfirm" type="button">완료</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const form = document.getElementById('form');
+  const urlInput = document.getElementById('urlInput');
+  const submitBtn = document.getElementById('submitBtn');
+  const result = document.getElementById('result');
+  const resultBody = document.getElementById('resultBody');
+  const dday = document.getElementById('dday');
+  const saveBtn = document.getElementById('saveBtn');
+  const listShortcut = document.getElementById('listShortcut');
+  const listOverlay = document.getElementById('listOverlay');
+  const closeListBtn = document.getElementById('closeList');
+  const listItems = document.getElementById('listItems');
+  const listEmpty = document.getElementById('listEmpty');
+  const tabUpcoming = document.getElementById('tabUpcoming');
+  const tabPast = document.getElementById('tabPast');
+  let activeTab = 'upcoming';
+  function setTab(tab) {
+    activeTab = tab;
+    tabUpcoming.classList.toggle('active', tab === 'upcoming');
+    tabPast.classList.toggle('active', tab === 'past');
+    renderList();
+  }
+  tabUpcoming.addEventListener('click', () => setTab('upcoming'));
+  tabPast.addEventListener('click', () => setTab('past'));
+  const roleOverlay = document.getElementById('roleOverlay');
+  const roleGroom = document.getElementById('roleGroom');
+  const roleBride = document.getElementById('roleBride');
+  const roleGroomLabel = document.getElementById('roleGroomLabel');
+  const roleBrideLabel = document.getElementById('roleBrideLabel');
+  const roleConfirm = document.getElementById('roleConfirm');
+  const successOverlay = document.getElementById('successOverlay');
+  const successYes = document.getElementById('successYes');
+  const successNo = document.getElementById('successNo');
+  successYes.addEventListener('click', () => {
+    successOverlay.hidden = true;
+    setTab('upcoming');
+    listOverlay.hidden = false;
+  });
+  successNo.addEventListener('click', () => { successOverlay.hidden = true; });
+  successOverlay.addEventListener('click', (e) => {
+    if (e.target === successOverlay) successOverlay.hidden = true;
+  });
+
+  const amountOverlay = document.getElementById('amountOverlay');
+  const amountInput = document.getElementById('amountInput');
+  const amountSave = document.getElementById('amountSave');
+  const amountSkip = document.getElementById('amountSkip');
+  const amountTitle = document.getElementById('amountTitle');
+  const amountSubMsg = document.getElementById('amountSubMsg');
+  let pendingTransfer = null;
+  let editingPayment = null;
+  let amountMode = 'kakao';
+
+  function showAmountPrompt() {
+    if (!pendingTransfer) return;
+    amountMode = 'kakao';
+    amountTitle.textContent = `축의금 기록 (${pendingTransfer.role})`;
+    amountSubMsg.textContent = '얼마 보내셨나요?';
+    amountSkip.textContent = '건너뛰기';
+    amountInput.value = '';
+    amountOverlay.hidden = false;
+    setTimeout(() => amountInput.focus(), 100);
+  }
+
+  function savePayment() {
+    const raw = amountInput.value.replace(/[^\d]/g, '');
+    if (!raw) {
+      pendingTransfer = null;
+      editingPayment = null;
+      amountOverlay.hidden = true;
+      return;
+    }
+    const amount = parseInt(raw, 10) * 10000;
+
+    if (editingPayment) {
+      const all = getSchedules();
+      const targetMethod = amountMode === 'editConvert' ? editingPayment.targetMethod : null;
+      const updated = all.map((s) => {
+        if (s.id !== editingPayment.itemId) return s;
+        const payments = (s.payments || []).map((p) => {
+          if (p.role === editingPayment.role && p.sentAt === editingPayment.sentAt) {
+            const next = { ...p, amount };
+            if (targetMethod) next.method = targetMethod;
+            return next;
+          }
+          return p;
+        });
+        return { ...s, payments };
+      });
+      saveSchedules(updated);
+      const itemId = editingPayment.itemId;
+      editingPayment = null;
+      amountMode = 'kakao';
+      amountOverlay.hidden = true;
+      const fresh = updated.find((s) => s.id === itemId);
+      if (fresh) {
+        currentDetailItem = fresh;
+        updateCelebrateBtnState();
+      }
+      if (currentPaymentView && fresh) {
+        if (currentPaymentView.type === 'all') {
+          showAllPaymentsForItem(fresh);
+        } else if (currentPaymentView.type === 'role') {
+          showPaymentRecord(currentPaymentView.role);
+        }
+      }
+      if (!celebrateOverlay.hidden && fresh) populateCelebrateModal(fresh);
+      return;
+    }
+
+    if (pendingTransfer) {
+      const all = getSchedules();
+      const updated = all.map((s) => {
+        if (s.id !== pendingTransfer.itemId) return s;
+        const payments = Array.isArray(s.payments) ? [...s.payments] : [];
+        payments.push({
+          role: pendingTransfer.role,
+          amount,
+          sentAt: new Date().toISOString(),
+          method: pendingTransfer.method || 'transfer',
+        });
+        return { ...s, payments };
+      });
+      saveSchedules(updated);
+      const itemId = pendingTransfer.itemId;
+      pendingTransfer = null;
+      amountOverlay.hidden = true;
+      celebrateOverlay.hidden = true;
+      detailOverlay.hidden = true;
+      // 저장 후 일정 목록 열기 (해당 일정 날짜 기준 탭 선택)
+      const fresh = updated.find((s) => s.id === itemId);
+      if (fresh) {
+        currentDetailItem = fresh;
+        updateCelebrateBtnState();
+        const days = calcDays(fresh.date);
+        const tab = days !== null && days < 0 ? 'past' : 'upcoming';
+        setTab(tab);
+      } else {
+        setTab('upcoming');
+      }
+      listOverlay.hidden = false;
+      return;
+    }
+    amountOverlay.hidden = true;
+  }
+
+  amountSave.addEventListener('click', savePayment);
+  amountSkip.addEventListener('click', () => {
+    if (amountMode === 'edit' && editingPayment) {
+      const toMethod = editingPayment.currentMethod === 'inPerson' ? 'transfer' : 'inPerson';
+      editingPayment.targetMethod = toMethod;
+      amountMode = 'editConvert';
+      if (toMethod === 'transfer') {
+        amountTitle.textContent = `계좌 송금 기록 (${editingPayment.role})`;
+        amountSubMsg.textContent = '송금하신 금액을 입력해주세요';
+      } else {
+        amountTitle.textContent = `대면 전달 기록 (${editingPayment.role})`;
+        amountSubMsg.textContent = '직접 전달하신 금액을 입력해주세요';
+      }
+      amountSkip.textContent = '취소';
+      amountInput.value = '';
+      setTimeout(() => amountInput.focus(), 50);
+      return;
+    }
+    if (amountMode === 'editConvert') {
+      editingPayment = null;
+      amountOverlay.hidden = true;
+      return;
+    }
+    const wasInPerson = amountMode === 'inPerson';
+    pendingTransfer = null;
+    editingPayment = null;
+    amountOverlay.hidden = true;
+    if (wasInPerson && currentDetailItem) {
+      openCelebrateChoice();
+    }
+  });
+  amountInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') savePayment();
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && pendingTransfer) {
+      showAmountPrompt();
+    }
+  });
+
+  const infoOverlay = document.getElementById('infoOverlay');
+  const infoMsg = document.getElementById('infoMsg');
+  const infoOk = document.getElementById('infoOk');
+  function showInfo(msg) {
+    infoMsg.textContent = msg;
+    infoOverlay.hidden = false;
+  }
+  infoOk.addEventListener('click', () => { infoOverlay.hidden = true; });
+  infoOverlay.addEventListener('click', (e) => {
+    if (e.target === infoOverlay) infoOverlay.hidden = true;
+  });
+
+  const confirmOverlay = document.getElementById('confirmOverlay');
+  const confirmYes = document.getElementById('confirmYes');
+  const confirmNo = document.getElementById('confirmNo');
+  let pendingConfirm = null;
+  function showConfirm(cb) {
+    pendingConfirm = cb;
+    confirmOverlay.hidden = false;
+  }
+  confirmYes.addEventListener('click', () => {
+    const cb = pendingConfirm;
+    pendingConfirm = null;
+    confirmOverlay.hidden = true;
+    if (cb) cb();
+  });
+  confirmNo.addEventListener('click', () => {
+    pendingConfirm = null;
+    confirmOverlay.hidden = true;
+  });
+  confirmOverlay.addEventListener('click', (e) => {
+    if (e.target === confirmOverlay) {
+      pendingConfirm = null;
+      confirmOverlay.hidden = true;
+    }
+  });
+
+  const detailOverlay = document.getElementById('detailOverlay');
+  const closeDetailBtn = document.getElementById('closeDetail');
+  const detailGroom = document.getElementById('detailGroom');
+  const detailBride = document.getElementById('detailBride');
+  const detailDateTime = document.getElementById('detailDateTime');
+  const detailLocation = document.getElementById('detailLocation');
+  const detailGroomAccountRow = document.getElementById('detailGroomAccountRow');
+  const detailBrideAccountRow = document.getElementById('detailBrideAccountRow');
+  const detailGroomAccount = document.getElementById('detailGroomAccount');
+  const detailBrideAccount = document.getElementById('detailBrideAccount');
+  const detailGroomTransfer = document.getElementById('detailGroomTransfer');
+  const detailBrideTransfer = document.getElementById('detailBrideTransfer');
+  let currentDetailItem = null;
+
+  function showToast(text) {
+    let toast = document.getElementById('transferToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'transferToast';
+      toast.className = 'transfer-toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = text;
+    toast.hidden = false;
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => { toast.hidden = true; }, 2200);
+  }
+
+  function triggerTransfer(account, role) {
+    if (!account) {
+      showInfo('계좌번호가 비어있습니다.');
+      return;
+    }
+    const numMatch = String(account).match(/\d[\d-]*\d/);
+    const toCopy = numMatch ? numMatch[0] : account;
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    // 1) 클립보드 복사 (백그라운드)
+    if (navigator.clipboard) navigator.clipboard.writeText(toCopy).catch(() => {});
+
+    // 2) 송금 끝나고 돌아왔을 때 축의금 입력 모달을 띄우기 위한 상태 저장
+    if (currentDetailItem && role) {
+      pendingTransfer = { itemId: currentDetailItem.id, role, method: 'transfer' };
+    }
+
+    // 3) 모바일이면 anchor 클릭으로 kakaopay 스킴 트리거 (user gesture 보존)
+    if (isMobile) {
+      const a = document.createElement('a');
+      a.href = 'kakaopay://';
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('계좌번호 복사됨 · 카카오페이 여는 중');
+    } else {
+      showToast('계좌번호 복사됨 · 모바일에서 카카오페이를 열어주세요');
+    }
+
+    // 4) 송금 끝나고 돌아오면 메인 화면으로 보이도록 모든 모달 닫기
+    detailOverlay.hidden = true;
+    listOverlay.hidden = true;
+  }
+
+  detailGroomTransfer.addEventListener('click', () => {
+    triggerTransfer(currentDetailItem?.groomAccount || '', '신랑');
+  });
+  detailBrideTransfer.addEventListener('click', () => {
+    triggerTransfer(currentDetailItem?.brideAccount || '', '신부');
+  });
+
+  const paymentOverlay = document.getElementById('paymentOverlay');
+  const paymentTitle = document.getElementById('paymentTitle');
+  const paymentTotal = document.getElementById('paymentTotal');
+  const paymentList = document.getElementById('paymentList');
+  const closePaymentBtn = document.getElementById('closePayment');
+  let currentPaymentView = null;
+  closePaymentBtn.addEventListener('click', () => { paymentOverlay.hidden = true; currentPaymentView = null; });
+  paymentOverlay.addEventListener('click', (e) => {
+    if (e.target === paymentOverlay) { paymentOverlay.hidden = true; currentPaymentView = null; }
+  });
+
+  function showAllPaymentsForItem(item) {
+    const ps = Array.isArray(item.payments) ? item.payments : [];
+    if (ps.length === 0) {
+      showInfo('축의 기록이 없습니다.');
+      return;
+    }
+    currentPaymentView = { type: 'all', itemId: item.id };
+    const total = ps.reduce((s, p) => s + (p.amount || 0), 0);
+    paymentTitle.textContent = '축의 기록';
+    paymentTotal.textContent = `총 ${(total / 10000).toLocaleString()}만원`;
+    paymentList.innerHTML = '';
+    for (const p of ps) {
+      const li = document.createElement('li');
+      const amt = document.createElement('span');
+      amt.className = 'payment-amount';
+      amt.textContent = `${(p.amount || 0).toLocaleString()}원`;
+      const dt = document.createElement('span');
+      dt.className = 'payment-date';
+      const methodLabel = p.method === 'inPerson' ? '대면 전달' : '계좌 송금';
+      dt.textContent = (p.role ? p.role : '') + ' · ' + methodLabel;
+      const actions = document.createElement('div');
+      actions.className = 'payment-actions';
+      const editBtn = document.createElement('button');
+      editBtn.className = 'payment-edit-btn';
+      editBtn.type = 'button';
+      editBtn.textContent = '수정';
+      editBtn.onclick = (e) => {
+        e.stopPropagation();
+        editPaymentEntry(p.role, p);
+      };
+      const delBtn = document.createElement('button');
+      delBtn.className = 'payment-del-btn';
+      delBtn.type = 'button';
+      delBtn.textContent = '삭제';
+      delBtn.onclick = (e) => {
+        e.stopPropagation();
+        deletePaymentEntry(p.role, p);
+      };
+      actions.append(editBtn, delBtn);
+      li.append(amt, dt, actions);
+      paymentList.append(li);
+    }
+    paymentOverlay.hidden = false;
+  }
+
+  function showPaymentRecord(role) {
+    if (!currentDetailItem) return;
+    const ps = (currentDetailItem.payments || []).filter((p) => p.role === role);
+    if (ps.length === 0) {
+      showInfo(`${role} 축의 기록이 없습니다.`);
+      return;
+    }
+    currentPaymentView = { type: 'role', role };
+    const total = ps.reduce((s, p) => s + (p.amount || 0), 0);
+    paymentTitle.textContent = `${role} 축의 기록`;
+    paymentTotal.textContent = `총 ${(total / 10000).toLocaleString()}만원`;
+    paymentList.innerHTML = '';
+    for (const p of ps) {
+      const li = document.createElement('li');
+      const amt = document.createElement('span');
+      amt.className = 'payment-amount';
+      amt.textContent = `${(p.amount || 0).toLocaleString()}원`;
+      const dt = document.createElement('span');
+      dt.className = 'payment-date';
+      dt.textContent = p.method === 'inPerson' ? '대면 전달' : '계좌 송금';
+
+      const actions = document.createElement('div');
+      actions.className = 'payment-actions';
+      const editBtn = document.createElement('button');
+      editBtn.className = 'payment-edit-btn';
+      editBtn.type = 'button';
+      editBtn.textContent = '수정';
+      editBtn.onclick = (e) => {
+        e.stopPropagation();
+        editPaymentEntry(role, p);
+      };
+      const delBtn = document.createElement('button');
+      delBtn.className = 'payment-del-btn';
+      delBtn.type = 'button';
+      delBtn.textContent = '삭제';
+      delBtn.onclick = (e) => {
+        e.stopPropagation();
+        deletePaymentEntry(role, p);
+      };
+      actions.append(editBtn, delBtn);
+
+      li.append(amt, dt, actions);
+      paymentList.append(li);
+    }
+    paymentOverlay.hidden = false;
+  }
+
+  function editPaymentEntry(role, payment) {
+    if (!currentDetailItem) return;
+    editingPayment = { itemId: currentDetailItem.id, role, sentAt: payment.sentAt, currentMethod: payment.method || 'transfer' };
+    amountMode = 'edit';
+    amountTitle.textContent = `축의 기록 수정 (${role})`;
+    amountSubMsg.textContent = '금액을 수정해주세요';
+    amountSkip.textContent = editingPayment.currentMethod === 'inPerson' ? '송금했어요' : '직접 냈어요';
+    amountInput.value = '';
+    amountOverlay.hidden = false;
+    setTimeout(() => amountInput.focus(), 100);
+  }
+
+  function deletePaymentEntry(role, payment) {
+    if (!currentDetailItem) return;
+    showConfirm(() => {
+      const updated = getSchedules().map((s) => {
+        if (s.id !== currentDetailItem.id) return s;
+        const payments = (s.payments || []).filter(
+          (p) => !(p.role === role && p.sentAt === payment.sentAt && p.amount === payment.amount)
+        );
+        return { ...s, payments };
+      });
+      saveSchedules(updated);
+      currentDetailItem = updated.find((s) => s.id === currentDetailItem.id) || currentDetailItem;
+      updateCelebrateBtnState();
+      const remaining = (currentDetailItem.payments || []).filter((p) => p.role === role);
+      if (remaining.length > 0) {
+        showPaymentRecord(role);
+      } else {
+        paymentOverlay.hidden = true;
+      }
+      // celebrate 모달 떠있으면 즉시 새로고침 (축의 완료 버튼 갱신)
+      if (!celebrateOverlay.hidden) populateCelebrateModal(currentDetailItem);
+    });
+  }
+  document.getElementById('detailGroomPaymentBtn').addEventListener('click', () => showPaymentRecord('신랑'));
+  document.getElementById('detailBridePaymentBtn').addEventListener('click', () => showPaymentRecord('신부'));
+
+  const STORAGE_KEY = 'schedules_v1';
+  let currentEvent = null;
+  let editingId = null;
+
+  function getSchedules() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+    catch { return []; }
+  }
+  function saveSchedules(arr) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+    updateShortcutCount();
+    renderMainSchedules();
+    if (!listOverlay.hidden) renderList();
+    if (currentDetailItem) {
+      const fresh = arr.find((s) => s.id === currentDetailItem.id);
+      if (fresh) {
+        currentDetailItem = fresh;
+        updateCelebrateBtnState();
+      }
+    }
+  }
+  function updateShortcutCount() {
+    const upcoming = getSchedules().filter((s) => {
+      const days = calcDays(s.date);
+      return days === null || days >= 0;
+    }).length;
+    listShortcut.textContent = `일정 (${upcoming})`;
+  }
+  function calcDays(dateStr) {
+    if (!dateStr || !/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return null;
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const ev = new Date(y, m - 1, d);
+    const td = new Date();
+    ev.setHours(0, 0, 0, 0);
+    td.setHours(0, 0, 0, 0);
+    return Math.round((ev - td) / 86400000);
+  }
+  function formatKoreanDate(iso) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return '';
+    const [y, m, d] = iso.split('-');
+    return `${y}년 ${parseInt(m, 10)}월 ${parseInt(d, 10)}일`;
+  }
+  function splitInfo(info) {
+    if (!info) return { time: '', location: '' };
+    const idx = info.indexOf(',');
+    let datetimePart = info, location = '';
+    if (idx > -1) {
+      datetimePart = info.slice(0, idx).trim();
+      location = info.slice(idx + 1).trim();
+    }
+    const patterns = [
+      /(?:오[전후]|낮|밤|새벽|아침|저녁)\s*\d{1,2}시(?:\s*\d{1,2}분)?/,
+      /(?:오[전후]|낮|밤|새벽|아침|저녁)\s*\d{1,2}:\d{2}/,
+      /\d{1,2}:\d{2}/,
+      /\d{1,2}시(?:\s*\d{1,2}분)?/,
+    ];
+    let raw = '';
+    for (const p of patterns) {
+      const m = datetimePart.match(p);
+      if (m) { raw = m[0]; break; }
+    }
+    return { time: normalizeTime(raw), location };
+  }
+
+  function normalizeTime(t) {
+    if (!t) return '';
+    let s = t.trim();
+    const wordMap = { '낮': '오후', '밤': '오후', '저녁': '오후', '새벽': '오전', '아침': '오전' };
+    for (const [k, v] of Object.entries(wordMap)) {
+      if (s.startsWith(k)) { s = s.replace(k, v).trim(); break; }
+    }
+    const m = s.match(/^(오[전후])?\s*(\d{1,2})(?:[:시]\s*(\d{1,2})분?)?/);
+    if (!m) return s;
+    let prefix = m[1];
+    let h = parseInt(m[2], 10);
+    const min = m[3] ? parseInt(m[3], 10) : 0;
+    if (!prefix) {
+      if (h === 0) { prefix = '오전'; h = 12; }
+      else if (h < 12) prefix = '오전';
+      else if (h === 12) prefix = '오후';
+      else { prefix = '오후'; h -= 12; }
+    } else if (h > 12) {
+      h -= 12;
+    }
+    return min > 0 ? `${prefix} ${h}시 ${min}분` : `${prefix} ${h}시`;
+  }
+  function ddayLabel(days) {
+    if (days === null) return '';
+    if (days === 0) return 'D-DAY';
+    if (days > 0) return `D-${days}`;
+    return `D+${-days}`;
+  }
+  function renderList() {
+    const all = getSchedules();
+    const list = all.filter((item) => {
+      const days = calcDays(item.date);
+      if (activeTab === 'upcoming') return days === null || days >= 0;
+      return days !== null && days < 0;
+    });
+    list.sort((a, b) => {
+      const da = calcDays(a.date);
+      const db = calcDays(b.date);
+      if (da === null && db === null) return 0;
+      if (da === null) return 1;
+      if (db === null) return -1;
+      return activeTab === 'upcoming' ? da - db : db - da;
+    });
+    listItems.innerHTML = '';
+    if (list.length === 0) {
+      listEmpty.textContent = activeTab === 'upcoming'
+        ? '예정된 일정이 없습니다.'
+        : '지난 일정이 없습니다.';
+      listEmpty.hidden = false;
+      listItems.hidden = true;
+      return;
+    }
+    listEmpty.hidden = true;
+    listItems.hidden = false;
+    for (const item of list) {
+      const li = document.createElement('li');
+
+      const days = calcDays(item.date);
+      const dayEl = document.createElement('div');
+      dayEl.className = 'item-dday';
+      if (days !== null && days < 0) dayEl.classList.add('past');
+      dayEl.textContent = ddayLabel(days);
+
+      const titleEl = document.createElement('div');
+      titleEl.className = 'item-name';
+      titleEl.style.flex = '1';
+      titleEl.textContent = buildListTitle(item);
+
+      let secondBtn = null;
+      if (activeTab === 'past') {
+        const hasPayments = Array.isArray(item.payments) && item.payments.length > 0;
+        if (hasPayments) {
+          secondBtn = document.createElement('button');
+          secondBtn.className = 'item-payment';
+          secondBtn.type = 'button';
+          secondBtn.textContent = '축의 완료';
+          secondBtn.onclick = (e) => {
+            e.stopPropagation();
+            currentDetailItem = item;
+            showAllPaymentsForItem(item);
+          };
+        }
+      } else {
+        secondBtn = document.createElement('button');
+        secondBtn.className = 'item-edit';
+        secondBtn.type = 'button';
+        secondBtn.textContent = '수정';
+        secondBtn.onclick = (e) => {
+          e.stopPropagation();
+          openEditFromList(item);
+        };
+      }
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'item-delete';
+      delBtn.type = 'button';
+      delBtn.textContent = '삭제';
+      delBtn.onclick = (e) => {
+        e.stopPropagation();
+        showConfirm(() => {
+          saveSchedules(getSchedules().filter((s) => s.id !== item.id));
+          renderList();
+        });
+      };
+
+      if (secondBtn) {
+        li.append(dayEl, titleEl, secondBtn, delBtn);
+      } else {
+        const placeholder = document.createElement('span');
+        li.append(dayEl, titleEl, placeholder, delBtn);
+      }
+      li.onclick = () => openDetail(item);
+      listItems.append(li);
+    }
+  }
+
+  function buildListTitle(item) {
+    const { groom, bride } = parseNames(item.name);
+    const parts = [];
+    if (item.roles?.includes('신랑') && groom) parts.push(groom);
+    if (item.roles?.includes('신부') && bride) parts.push(bride);
+    if (parts.length === 0) return item.name || '(이름 없음)';
+    return parts.join(' · ') + ' 결혼식';
+  }
+
+  function formatDetailDateTime(isoDate, infoStr) {
+    if (!isoDate || !/^\d{4}-\d{2}-\d{2}$/.test(isoDate)) return infoStr || '';
+    const [y, m, d] = isoDate.split('-');
+    const dt = new Date(parseInt(y, 10), parseInt(m, 10) - 1, parseInt(d, 10));
+    const dows = ['일', '월', '화', '수', '목', '금', '토'];
+    const dow = dows[dt.getDay()];
+    const { time } = splitInfo(infoStr || '');
+    let timeStr = '';
+    if (time) {
+      const tm = time.match(/^(오[전후])\s*(\d{1,2})시(?:\s*(\d{1,2})분)?$/);
+      if (tm) {
+        const ampm = tm[1];
+        const hh = tm[2].padStart(2, '0');
+        const minNum = tm[3] ? parseInt(tm[3], 10) : 0;
+        const minPart = minNum > 0 ? ` ${String(minNum).padStart(2, '0')}분` : '';
+        timeStr = ` ${ampm} ${hh}시${minPart}`;
+      } else {
+        timeStr = ` ${time}`;
+      }
+    }
+    return `${y}년 ${m}월 ${d}일 (${dow})${timeStr}`;
+  }
+
+  function formatAccountDisplay(accountStr) {
+    if (!accountStr) return '-';
+    const idx = String(accountStr).indexOf(' ');
+    if (idx === -1) return accountStr;
+    return accountStr.slice(0, idx) + '\n' + accountStr.slice(idx + 1);
+  }
+
+  const celebrateOverlay = document.getElementById('celebrateOverlay');
+  const closeCelebrateBtn = document.getElementById('closeCelebrate');
+  const celebrateBtn = document.getElementById('celebrateBtn');
+
+  function populateCelebrateModal(item) {
+    const roles = Array.isArray(item.roles) ? item.roles : [];
+    const showGroom = roles.includes('신랑');
+    const showBride = roles.includes('신부');
+    const payments = Array.isArray(item.payments) ? item.payments : [];
+    const { groom, bride } = parseNames(item.name);
+
+    detailGroomAccountRow.hidden = !showGroom;
+    detailBrideAccountRow.hidden = !showBride;
+
+    const detailGroomLabel = document.getElementById('detailGroomLabel');
+    const detailBrideLabel = document.getElementById('detailBrideLabel');
+    if (showGroom) {
+      detailGroomLabel.textContent = groom ? `신랑\n${groom}` : '신랑';
+      detailGroomAccount.textContent = formatAccountDisplay(item.groomAccount);
+      detailGroomTransfer.classList.toggle('disabled-look', !item.groomAccount);
+      detailGroomPaymentRow.hidden = payments.filter((p) => p.role === '신랑').length === 0;
+    } else {
+      detailGroomPaymentRow.hidden = true;
+    }
+    if (showBride) {
+      detailBrideLabel.textContent = bride ? `신부\n${bride}` : '신부';
+      detailBrideAccount.textContent = formatAccountDisplay(item.brideAccount);
+      detailBrideTransfer.classList.toggle('disabled-look', !item.brideAccount);
+      detailBridePaymentRow.hidden = payments.filter((p) => p.role === '신부').length === 0;
+    } else {
+      detailBridePaymentRow.hidden = true;
+    }
+  }
+
+  const celebrateChoice = document.getElementById('celebrateChoice');
+  const payInPersonBtn = document.getElementById('payInPersonBtn');
+  const payByAccountBtn = document.getElementById('payByAccountBtn');
+
+  function openCelebrateChoice() {
+    detailAccountSection.hidden = true;
+    celebrateChoice.hidden = false;
+    celebrateOverlay.hidden = false;
+  }
+
+  celebrateBtn.addEventListener('click', () => {
+    if (!currentDetailItem) return;
+    const hasPayments = Array.isArray(currentDetailItem.payments) && currentDetailItem.payments.length > 0;
+    if (hasPayments) {
+      showAllPaymentsForItem(currentDetailItem);
+    } else {
+      openCelebrateChoice();
+    }
+  });
+
+  payByAccountBtn.addEventListener('click', () => {
+    if (!currentDetailItem) return;
+    populateCelebrateModal(currentDetailItem);
+    celebrateChoice.hidden = true;
+    detailAccountSection.hidden = false;
+  });
+
+  payInPersonBtn.addEventListener('click', () => {
+    if (!currentDetailItem) return;
+    const roles = Array.isArray(currentDetailItem.roles) ? currentDetailItem.roles : [];
+    const role = roles.includes('신랑') ? '신랑' : (roles.includes('신부') ? '신부' : '신랑');
+    pendingTransfer = { itemId: currentDetailItem.id, role, method: 'inPerson' };
+    amountMode = 'inPerson';
+    celebrateOverlay.hidden = true;
+    amountTitle.textContent = `축의금 기록 (${role})`;
+    amountSubMsg.textContent = '얼마 내셨나요?';
+    amountSkip.textContent = '뒤로가기';
+    amountInput.value = '';
+    amountOverlay.hidden = false;
+    setTimeout(() => amountInput.focus(), 100);
+  });
+
+  closeCelebrateBtn.addEventListener('click', () => { celebrateOverlay.hidden = true; });
+  celebrateOverlay.addEventListener('click', (e) => {
+    if (e.target === celebrateOverlay) celebrateOverlay.hidden = true;
+  });
+
+  function openDetail(item) {
+    currentDetailItem = item;
+    const { groom, bride } = parseNames(item.name);
+    detailGroom.textContent = groom || '-';
+    detailBride.textContent = bride || '-';
+    detailDateTime.textContent = formatDetailDateTime(item.date, item.info) || '-';
+    const info = item.info || '';
+    const idx = info.indexOf(',');
+    detailLocation.textContent = idx > -1 ? (info.slice(idx + 1).trim() || '-') : '-';
+    updateCelebrateBtnState();
+    detailOverlay.hidden = false;
+  }
+
+  function updateCelebrateBtnState() {
+    if (!currentDetailItem) return;
+    const hasPayments = Array.isArray(currentDetailItem.payments) && currentDetailItem.payments.length > 0;
+    celebrateBtn.textContent = hasPayments ? '축하 완료' : '축하하기';
+    celebrateBtn.classList.toggle('completed', hasPayments);
+  }
+
+  closeDetailBtn.addEventListener('click', () => { detailOverlay.hidden = true; });
+  detailOverlay.addEventListener('click', (e) => {
+    if (e.target === detailOverlay) detailOverlay.hidden = true;
+  });
+  function setSaveButton(state) {
+    if (state === 'hidden') { saveBtn.hidden = true; return; }
+    saveBtn.hidden = false;
+    if (state === 'saved') {
+      saveBtn.textContent = '등록됨';
+      saveBtn.disabled = true;
+    } else if (state === 'already') {
+      saveBtn.textContent = '이미 등록된 일정입니다';
+      saveBtn.disabled = true;
+    } else {
+      saveBtn.textContent = '등록하기';
+      saveBtn.disabled = false;
+    }
+  }
+
+  function parseNames(eventName) {
+    const cleaned = (eventName || '').replace(/(결혼식|예식)\s*$/, '').trim();
+    const parts = cleaned.split(/\s*·\s*/);
+    return { groom: (parts[0] || '').trim(), bride: (parts[1] || '').trim() };
+  }
+
+  function updateRoleConfirm() {
+    roleConfirm.disabled = !(roleGroom.checked || roleBride.checked);
+  }
+
+  saveBtn.addEventListener('click', () => {
+    if (!currentEvent || !currentEvent.name) return;
+    editingId = null;
+    const { groom, bride } = parseNames(currentEvent.name);
+    roleGroomLabel.textContent = groom ? `신랑 ${groom}` : '신랑';
+    roleBrideLabel.textContent = bride ? `신부 ${bride}` : '신부';
+    roleGroom.checked = false;
+    roleBride.checked = false;
+    updateRoleConfirm();
+    roleOverlay.hidden = false;
+  });
+
+  function openEditFromList(item) {
+    editingId = item.id;
+    const { groom, bride } = parseNames(item.name);
+    roleGroomLabel.textContent = groom ? `신랑 ${groom}` : '신랑';
+    roleBrideLabel.textContent = bride ? `신부 ${bride}` : '신부';
+    roleGroom.checked = !!item.roles?.includes('신랑');
+    roleBride.checked = !!item.roles?.includes('신부');
+    updateRoleConfirm();
+    roleOverlay.hidden = false;
+  }
+
+  roleGroom.addEventListener('change', updateRoleConfirm);
+  roleBride.addEventListener('change', updateRoleConfirm);
+
+  roleConfirm.addEventListener('click', () => {
+    const roles = [];
+    if (roleGroom.checked) roles.push('신랑');
+    if (roleBride.checked) roles.push('신부');
+
+    if (editingId !== null) {
+      const updated = getSchedules().map((s) =>
+        s.id === editingId ? { ...s, roles } : s
+      );
+      saveSchedules(updated);
+      editingId = null;
+      roleOverlay.hidden = true;
+      renderList();
+      return;
+    }
+
+    if (!currentEvent || !currentEvent.name) {
+      roleOverlay.hidden = true;
+      return;
+    }
+    const all = getSchedules();
+    if (all.some((s) => s.url === currentEvent.url)) {
+      setSaveButton('already');
+      roleOverlay.hidden = true;
+      return;
+    }
+    all.push({
+      id: Date.now() + Math.random(),
+      url: currentEvent.url,
+      name: currentEvent.name,
+      info: currentEvent.info,
+      date: currentEvent.date,
+      groomAccount: currentEvent.groomAccount || '',
+      brideAccount: currentEvent.brideAccount || '',
+      roles,
+      addedAt: new Date().toISOString(),
+    });
+    saveSchedules(all);
+    setSaveButton('saved');
+    roleOverlay.hidden = true;
+    successOverlay.hidden = false;
+  });
+
+  roleOverlay.addEventListener('click', (e) => {
+    if (e.target === roleOverlay) {
+      roleOverlay.hidden = true;
+      editingId = null;
+    }
+  });
+  listShortcut.addEventListener('click', () => {
+    setTab('upcoming');
+    listOverlay.hidden = false;
+  });
+  closeListBtn.addEventListener('click', () => { listOverlay.hidden = true; });
+  listOverlay.addEventListener('click', (e) => {
+    if (e.target === listOverlay) listOverlay.hidden = true;
+  });
+
+  function renderMainSchedules() {
+    const mainSchedules = document.getElementById('mainSchedules');
+    const all = getSchedules();
+    mainSchedules.innerHTML = '';
+
+    const upcoming = all.filter((item) => {
+      const days = calcDays(item.date);
+      return days === null || days >= 0;
+    });
+    if (upcoming.length === 0) return;
+
+    const sorted = [...upcoming].sort((a, b) => {
+      const da = calcDays(a.date);
+      const db = calcDays(b.date);
+      if (da === null && db === null) return 0;
+      if (da === null) return 1;
+      if (db === null) return -1;
+      return da - db;
+    });
+
+    const card = document.createElement('div');
+    card.className = 'main-schedule-card';
+    for (const item of sorted) {
+      const days = calcDays(item.date);
+      const row = document.createElement('div');
+      row.className = 'main-schedule-item';
+
+      const dayEl = document.createElement('div');
+      dayEl.className = 'item-dday';
+      if (days !== null && days < 0) dayEl.classList.add('past');
+      dayEl.textContent = ddayLabel(days);
+
+      const nameEl = document.createElement('div');
+      nameEl.className = 'item-name';
+      nameEl.textContent = buildListTitle(item);
+
+      row.append(dayEl, nameEl);
+      row.onclick = () => openDetail(item);
+      card.append(row);
+    }
+    mainSchedules.append(card);
+  }
+
+  updateShortcutCount();
+  renderMainSchedules();
+
+  function setResult(text, kind) {
+    result.classList.remove('muted', 'err');
+    if (kind) result.classList.add(kind);
+    resultBody.textContent = text;
+    result.hidden = false;
+  }
+
+  function showPastEventResult(eventName) {
+    result.classList.remove('muted', 'err');
+    resultBody.innerHTML = '';
+    const nameEl = document.createElement('div');
+    nameEl.className = 'result-name';
+    nameEl.textContent = eventName;
+    resultBody.append(nameEl);
+    const msgEl = document.createElement('div');
+    msgEl.className = 'past-event-msg';
+    msgEl.textContent = '이미 진행된 결혼식이에요';
+    resultBody.append(msgEl);
+    result.hidden = false;
+  }
+
+  function showResultDetails({ eventName, date, time, location }) {
+    result.classList.remove('muted', 'err');
+    resultBody.innerHTML = '';
+    const nameEl = document.createElement('div');
+    nameEl.className = 'result-name';
+    nameEl.textContent = eventName;
+    resultBody.append(nameEl);
+    const detailsEl = document.createElement('div');
+    detailsEl.className = 'result-details';
+    const rows = [];
+    if (date) rows.push(`·  날짜 : ${date}`);
+    if (time) rows.push(`·  시간 : ${time}`);
+    if (location) rows.push(`·  장소 : ${location}`);
+    for (const r of rows) {
+      const row = document.createElement('div');
+      row.textContent = r;
+      detailsEl.append(row);
+    }
+    if (rows.length > 0) resultBody.append(detailsEl);
+    result.hidden = false;
+  }
+
+  function showLoading() {
+    result.classList.remove('err');
+    result.classList.add('muted');
+    resultBody.innerHTML = '';
+    const textEl = document.createElement('div');
+    textEl.textContent = '잠시만 기다려주세요';
+    const img = document.createElement('img');
+    img.src = '/loading.gif';
+    img.alt = '';
+    img.className = 'loading-gif';
+    img.onerror = () => img.remove();
+    resultBody.append(textEl, img);
+    result.hidden = false;
+  }
+
+  function setDDay(eventDateStr) {
+    if (!eventDateStr || !/^\d{4}-\d{2}-\d{2}$/.test(eventDateStr)) {
+      dday.hidden = true;
+      dday.textContent = '';
+      return;
+    }
+    const [y, m, d] = eventDateStr.split('-').map(Number);
+    const event = new Date(y, m - 1, d);
+    const today = new Date();
+    event.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    const days = Math.round((event - today) / 86400000);
+
+    let big;
+    if (days === 0) big = 'D-DAY';
+    else if (days > 0) big = `D-${days}`;
+    else big = `D+${-days}`;
+
+    dday.innerHTML = '';
+    const bigEl = document.createElement('div');
+    bigEl.className = 'big';
+    bigEl.textContent = big;
+    dday.append(bigEl);
+    dday.hidden = false;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = urlInput.value.trim();
+    if (!input) return;
+
+    if (new TextEncoder().encode(input).length > 100) {
+      setResult('초대장 링크를 다시 확인해주세요', 'err');
+      setDDay('');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    showLoading();
+    setDDay('');
+    setSaveButton('hidden');
+    document.getElementById('mainSchedules').hidden = true;
+    currentEvent = null;
+
+    try {
+      const resp = await fetch('/api/summarize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ input }),
+      });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error || `서버 오류 (${resp.status})`);
+      const summary = data.summary || '(빈 응답)';
+      const lines = summary.split('\n');
+      const eventName = lines[0] || '';
+      const infoLine = (lines[1] || '').trim();
+      const eventDate = data.eventDate || '';
+      const isPastEvent =
+        eventName &&
+        !eventDate &&
+        !infoLine &&
+        !eventName.includes('정보를 찾을 수 없음');
+
+      if (isPastEvent) {
+        showPastEventResult(eventName);
+        setDDay('');
+        currentEvent = null;
+      } else {
+        const dateDisplay = formatKoreanDate(eventDate);
+        const { time, location } = splitInfo(infoLine);
+        showResultDetails({ eventName, date: dateDisplay, time, location });
+        setDDay(eventDate);
+        currentEvent = {
+          url: input,
+          name: eventName,
+          info: infoLine,
+          date: eventDate,
+          groomAccount: data.groomAccount || '',
+          brideAccount: data.brideAccount || '',
+        };
+        if (currentEvent.name && !currentEvent.name.includes('정보를 찾을 수 없음')) {
+          const dup = getSchedules().some((s) => s.url === currentEvent.url);
+          setSaveButton(dup ? 'already' : 'available');
+        }
+      }
+      urlInput.value = '';
+    } catch (err) {
+      setResult('오류: ' + err.message, 'err');
+      setDDay('');
+      setSaveButton('hidden');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
