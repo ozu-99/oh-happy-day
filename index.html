@@ -661,118 +661,9 @@
       color: #a82a30;
       margin-top: 6px;
     }
-    /* 로그인 오버레이 */
-    #loginOverlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(8px);
-      z-index: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 24px;
-    }
-    #loginOverlay[hidden] { display: none; }
-    .login-title {
-      font-family: 'Pinyon Script', cursive;
-      font-size: 64px;
-      color: #722f37;
-      margin: 0;
-    }
-    .login-sub {
-      font-family: 'JoseonGulim', sans-serif;
-      font-size: 14px;
-      color: #555;
-      margin: 0 0 8px;
-    }
-    .login-form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 280px;
-    }
-    .login-form input {
-      padding: 12px 14px;
-      font-size: 14px;
-      border: 1px solid rgba(0, 0, 0, 0.15);
-      border-radius: 6px;
-      font-family: 'JoseonGulim', sans-serif;
-      background: rgba(255, 255, 255, 0.9);
-    }
-    .login-form input:focus {
-      outline: none;
-      border-color: #f6a4a8;
-    }
-    .login-actions {
-      display: flex;
-      gap: 8px;
-    }
-    .login-primary, .login-secondary {
-      flex: 1;
-      padding: 12px;
-      font-size: 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-family: 'JoseonGulim', sans-serif;
-      border: 1px solid transparent;
-    }
-    .login-primary {
-      background: #722f37;
-      color: #fff;
-      border-color: #722f37;
-    }
-    .login-primary:hover { background: #5d2329; }
-    .login-secondary {
-      background: #ffffff;
-      color: #722f37;
-      border-color: #722f37;
-    }
-    .login-secondary:hover { background: #fff5f6; }
-    .login-error {
-      color: #a82a30;
-      font-size: 12px;
-      text-align: center;
-      margin: 4px 0 0;
-      font-family: 'JoseonGulim', sans-serif;
-    }
-    /* 로그아웃 버튼 */
-    #logoutBtn {
-      position: fixed;
-      top: 16px;
-      left: 16px;
-      background: rgba(255, 255, 255, 0.85);
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: 999px;
-      padding: 6px 14px;
-      font-size: 13px;
-      cursor: pointer;
-      font-family: 'JoseonGulim', sans-serif;
-      color: #555;
-      z-index: 60;
-    }
-    #logoutBtn:hover { background: rgba(255, 255, 255, 0.98); }
-    #logoutBtn[hidden] { display: none; }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <div id="loginOverlay">
-    <h1 class="login-title">Oh Happy Day</h1>
-    <p class="login-sub">로그인하고 일정을 클라우드에 저장하세요</p>
-    <form id="loginForm" class="login-form">
-      <input id="loginEmail" type="email" placeholder="이메일" autocomplete="email" required>
-      <input id="loginPassword" type="password" placeholder="비밀번호 (6자 이상)" autocomplete="current-password" minlength="6" required>
-      <div class="login-actions">
-        <button id="loginBtn" type="submit" class="login-primary">로그인</button>
-        <button id="signupBtn" type="button" class="login-secondary">회원가입</button>
-      </div>
-      <p id="loginError" class="login-error" hidden></p>
-    </form>
-  </div>
-  <button id="logoutBtn" type="button" hidden>로그아웃</button>
-
   <header class="page-head">
     <h1><span class="initial">O</span>h Happy Day</h1>
     <p class="sub">모바일 청첩장 링크를 입력해주세요</p>
@@ -954,105 +845,6 @@
   </div>
 
 <script>
-  // === Supabase 설정 ===
-  const SUPABASE_URL = 'https://vjmzfofhbmluaqoieuim.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_BZ9hs9Dw9yYHk40k1LWYGA_Kvg1LDa8';
-  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  // === 로그인 / 로그아웃 ===
-  const loginOverlay = document.getElementById('loginOverlay');
-  const loginForm = document.getElementById('loginForm');
-  const loginEmail = document.getElementById('loginEmail');
-  const loginPassword = document.getElementById('loginPassword');
-  const signupBtn = document.getElementById('signupBtn');
-  const loginError = document.getElementById('loginError');
-  const logoutBtn = document.getElementById('logoutBtn');
-  let currentUser = null;
-
-  function showLogin() {
-    loginOverlay.hidden = false;
-    logoutBtn.hidden = true;
-  }
-  function hideLogin() {
-    loginOverlay.hidden = true;
-    logoutBtn.hidden = false;
-  }
-
-  function showLoginError(msg) {
-    loginError.textContent = msg;
-    loginError.hidden = false;
-  }
-  function clearLoginError() {
-    loginError.hidden = true;
-    loginError.textContent = '';
-  }
-
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    clearLoginError();
-    const email = loginEmail.value.trim();
-    const password = loginPassword.value;
-    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-    if (error) showLoginError('로그인 실패: ' + error.message);
-  });
-
-  signupBtn.addEventListener('click', async () => {
-    clearLoginError();
-    const email = loginEmail.value.trim();
-    const password = loginPassword.value;
-    if (!email || password.length < 6) {
-      showLoginError('이메일과 6자 이상 비밀번호를 입력하세요');
-      return;
-    }
-    const { data, error } = await supabaseClient.auth.signUp({ email, password });
-    if (error) {
-      showLoginError('가입 실패: ' + error.message);
-      return;
-    }
-    if (data.user && !data.session) {
-      showLoginError('가입 완료. 이메일로 받은 인증 링크를 눌러주세요.');
-    }
-  });
-
-  logoutBtn.addEventListener('click', () => {
-    currentUser = null;
-    scheduleCache = [];
-    syncedSnapshot = [];
-    updateShortcutCount();
-    renderMainSchedules();
-    showLogin();
-    void supabaseClient.auth.signOut();
-  });
-
-  supabaseClient.auth.onAuthStateChange(async (event, session) => {
-    const prevUser = currentUser;
-    currentUser = session?.user || null;
-    if (currentUser) {
-      hideLogin();
-      if (!prevUser || prevUser.id !== currentUser.id) {
-        await loadSchedulesFromSupabase();
-      }
-    } else {
-      showLogin();
-      scheduleCache = [];
-      syncedSnapshot = [];
-      updateShortcutCount();
-      renderMainSchedules();
-    }
-  });
-
-  // 초기 세션 확인
-  (async () => {
-    const { data } = await supabaseClient.auth.getSession();
-    currentUser = data.session?.user || null;
-    if (currentUser) {
-      hideLogin();
-      await loadSchedulesFromSupabase();
-    } else {
-      showLogin();
-    }
-  })();
-
   const form = document.getElementById('form');
   const urlInput = document.getElementById('urlInput');
   const submitBtn = document.getElementById('submitBtn');
@@ -1488,21 +1280,16 @@
   document.getElementById('detailGroomPaymentBtn').addEventListener('click', () => showPaymentRecord('신랑'));
   document.getElementById('detailBridePaymentBtn').addEventListener('click', () => showPaymentRecord('신부'));
 
+  const STORAGE_KEY = 'schedules_v1';
   let currentEvent = null;
   let editingId = null;
 
-  // === 데이터 캐시 + Supabase 동기화 ===
-  let scheduleCache = [];
-  let syncedSnapshot = [];
-  let isSyncing = false;
-  let pendingSync = null;
-
   function getSchedules() {
-    return scheduleCache;
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+    catch { return []; }
   }
-
   function saveSchedules(arr) {
-    scheduleCache = arr;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
     updateShortcutCount();
     renderMainSchedules();
     if (!listOverlay.hidden) renderList();
@@ -1511,141 +1298,6 @@
       if (fresh) {
         currentDetailItem = fresh;
         updateCelebrateBtnState();
-      }
-    }
-    void syncToSupabase(arr);
-  }
-
-  function toDbSchedule(s, userId) {
-    return {
-      id: s.id,
-      user_id: userId,
-      url: s.url || null,
-      name: s.name || null,
-      info: s.info || null,
-      date: s.date || null,
-      groom_account: s.groomAccount || null,
-      bride_account: s.brideAccount || null,
-      roles: s.roles || [],
-      added_at: s.addedAt || new Date().toISOString(),
-    };
-  }
-
-  function toDbPayment(p, scheduleId, userId) {
-    return {
-      id: p.id,
-      user_id: userId,
-      schedule_id: scheduleId,
-      role: p.role,
-      amount: p.amount,
-      method: p.method,
-      sent_at: p.sentAt,
-    };
-  }
-
-  function fromDbSchedule(row) {
-    return {
-      id: row.id,
-      url: row.url || '',
-      name: row.name || '',
-      info: row.info || '',
-      date: row.date || '',
-      groomAccount: row.groom_account || '',
-      brideAccount: row.bride_account || '',
-      roles: row.roles || [],
-      addedAt: row.added_at,
-      payments: (row.payments || []).map((p) => ({
-        id: p.id,
-        role: p.role,
-        amount: p.amount,
-        method: p.method,
-        sentAt: p.sent_at,
-      })),
-    };
-  }
-
-  async function loadSchedulesFromSupabase() {
-    if (!currentUser) return;
-    const { data, error } = await supabaseClient
-      .from('schedules')
-      .select('*, payments(*)')
-      .order('added_at', { ascending: false });
-    if (error) { console.error('Load error', error); return; }
-    scheduleCache = data.map(fromDbSchedule);
-    syncedSnapshot = JSON.parse(JSON.stringify(scheduleCache));
-    updateShortcutCount();
-    renderMainSchedules();
-  }
-
-  async function syncToSupabase(newSchedules) {
-    if (!currentUser) return;
-    if (isSyncing) { pendingSync = newSchedules; return; }
-    isSyncing = true;
-    try {
-      const userId = currentUser.id;
-      const oldById = new Map(syncedSnapshot.map((s) => [s.id, s]));
-      const newById = new Map(newSchedules.map((s) => [s.id, s]));
-
-      // 새 schedule 추가 / 기존 schedule 업데이트
-      for (const [id, sched] of newById) {
-        const old = oldById.get(id);
-        if (!old) {
-          await supabaseClient.from('schedules').insert(toDbSchedule(sched, userId));
-        } else {
-          const changed = ['url','name','info','date','groomAccount','brideAccount']
-            .some((k) => old[k] !== sched[k]) ||
-            JSON.stringify(old.roles||[]) !== JSON.stringify(sched.roles||[]);
-          if (changed) {
-            await supabaseClient.from('schedules').update(toDbSchedule(sched, userId)).eq('id', id);
-          }
-        }
-      }
-      // 삭제된 schedule
-      for (const [id] of oldById) {
-        if (!newById.has(id)) {
-          await supabaseClient.from('schedules').delete().eq('id', id);
-        }
-      }
-
-      // payments: 각 schedule별로 diff
-      for (const sched of newSchedules) {
-        const oldSched = oldById.get(sched.id);
-        const oldPayments = oldSched?.payments || [];
-        const newPayments = sched.payments || [];
-        const oldPidSet = new Set(oldPayments.map((p) => p.id).filter(Boolean));
-        const newPidSet = new Set(newPayments.map((p) => p.id).filter(Boolean));
-
-        // 추가
-        for (const p of newPayments) {
-          if (!p.id) {
-            p.id = crypto.randomUUID();
-            await supabaseClient.from('payments').insert(toDbPayment(p, sched.id, userId));
-          } else if (!oldPidSet.has(p.id)) {
-            await supabaseClient.from('payments').insert(toDbPayment(p, sched.id, userId));
-          } else {
-            const oldP = oldPayments.find((x) => x.id === p.id);
-            if (oldP && (oldP.amount !== p.amount || oldP.method !== p.method)) {
-              await supabaseClient.from('payments').update(toDbPayment(p, sched.id, userId)).eq('id', p.id);
-            }
-          }
-        }
-        // 삭제
-        for (const p of oldPayments) {
-          if (p.id && !newPidSet.has(p.id)) {
-            await supabaseClient.from('payments').delete().eq('id', p.id);
-          }
-        }
-      }
-
-      syncedSnapshot = JSON.parse(JSON.stringify(newSchedules));
-    } catch (e) {
-      console.error('Sync error', e);
-    } finally {
-      isSyncing = false;
-      if (pendingSync) {
-        const next = pendingSync;
-        pendingSync = null;
-        void syncToSupabase(next);
       }
     }
   }
