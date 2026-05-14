@@ -1848,6 +1848,19 @@
     dday.hidden = false;
   }
 
+  urlInput.addEventListener('click', async () => {
+    if (urlInput.value) return;
+    try {
+      const text = await navigator.clipboard.readText();
+      const trimmed = (text || '').trim();
+      if (/^https?:\/\//i.test(trimmed)) {
+        urlInput.value = trimmed;
+      }
+    } catch (e) {
+      // 클립보드 읽기 권한 거부 또는 미지원 — 무시
+    }
+  });
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (submitBtn.disabled) return;
