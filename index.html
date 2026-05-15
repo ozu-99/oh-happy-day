@@ -1895,6 +1895,12 @@
       return;
     }
 
+    if (!/^https?:\/\/\S+$/i.test(input)) {
+      setResult('URL을 입력해주세요', 'err');
+      setDDay('');
+      return;
+    }
+
     submitBtn.disabled = true;
     showLoading();
     setDDay('');
