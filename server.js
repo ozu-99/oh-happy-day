@@ -255,6 +255,14 @@ function readBody(req, limit = 10_000) {
 }
 
 const server = http.createServer(async (req, res) => {
+  const startTime = Date.now();
+  const ip = req.headers['x-forwarded-for']?.split(',')[0].trim()
+    || req.socket.remoteAddress || '-';
+  res.on('finish', () => {
+    const ms = Date.now() - startTime;
+    console.log(`${new Date().toISOString()} ${req.method} ${req.url} ${res.statusCode} ${ms}ms ip=${ip}`);
+  });
+
   if (req.method === 'GET' && (req.url === '/' || req.url === '/index.html')) {
     fs.readFile(HTML_PATH, (err, data) => {
       if (err) {
@@ -297,6 +305,7 @@ const server = http.createServer(async (req, res) => {
         return;
       }
       const trimmed = input.trim();
+      console.log(`[summarize] target=${trimmed} ip=${ip}`);
       if (Buffer.byteLength(trimmed, 'utf8') > 100) {
         res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ error: '초대장 링크를 다시 확인해주세요' }));
